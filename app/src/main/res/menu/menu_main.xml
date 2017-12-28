@@ -1,0 +1,90 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ca.edumedia.riba0007.doorsopenottawa.MainActivity">
+
+    <item
+        android:id="@+id/action_about"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="@string/action_about"
+        app:showAsAction="always" />
+    <item android:title="@string/action_sort">
+        <menu>
+            <group
+                android:id="@+id/sort_options"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/action_sort_name_asc"
+                    android:title="@string/action_sort_a_z" />
+                <item
+                    android:id="@+id/action_sort_name_dsc"
+                    android:title="@string/action_sort_z_a" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="@string/action_filter">
+        <menu>
+            <group
+                android:id="@+id/filter_options"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/action_filter_none"
+                    android:checked="false"
+                    android:title="@string/action_filter_none" />
+                <item
+                    android:id="@+id/action_filter_favorites"
+                    android:checked="false"
+                    android:title="@string/action_filter_favorites" />
+                <item
+                    android:id="@+id/action_filter_my_buildings"
+                    android:checked="false"
+                    android:title="@string/action_filter_my_buildings" />
+                <item
+                    android:id="@+id/action_filter_religious"
+                    android:checked="false"
+                    android:title="@string/action_filter_religious" />
+                <item
+                    android:id="@+id/action_filter_embassies"
+                    android:checked="false"
+                    android:title="@string/action_filter_embassies" />
+                <item
+                    android:id="@+id/action_filter_government"
+                    android:checked="false"
+                    android:title="@string/action_filter_government" />
+                <item
+                    android:id="@+id/action_filter_functional"
+                    android:checked="false"
+                    android:title="@string/action_filter_functional" />
+                <item
+                    android:id="@+id/action_filter_galleries"
+                    android:checked="false"
+                    android:title="@string/action_filter_galleries" />
+                <item
+                    android:id="@+id/action_filter_academic"
+                    android:checked="false"
+                    android:title="@string/action_filter_academic" />
+                <item
+                    android:id="@+id/action_filter_sports"
+                    android:checked="false"
+                    android:title="@string/action_filter_sports" />
+                <item
+                    android:id="@+id/action_filter_community"
+                    android:checked="false"
+                    android:title="@string/action_filter_community" />
+                <item
+                    android:id="@+id/action_filter_business"
+                    android:checked="false"
+                    android:title="@string/action_filter_business" />
+                <item
+                    android:id="@+id/action_filter_museums"
+                    android:checked="false"
+                    android:title="@string/action_filter_museums" />
+                <item
+                    android:id="@+id/action_filter_other"
+                    android:checked="false"
+                    android:title="@string/action_filter_other" />
+            </group>
+        </menu>
+    </item>
+</menu>
