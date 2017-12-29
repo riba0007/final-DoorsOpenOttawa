@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -60,7 +62,7 @@ public class EditBuildingActivity extends AppCompatActivity implements View.OnCl
     private FloatingActionButton btnImage;
     private CheckBox isNew;
 
-    //private boolean hasPicture = false;
+    private boolean hasPicture = false;
     private SimpleDateFormat dateFormatter;
     private Calendar newCalendar;
 
@@ -78,7 +80,12 @@ public class EditBuildingActivity extends AppCompatActivity implements View.OnCl
             if (intent.hasExtra(DOOService.SERVICE_PAYLOAD)) {
                 String message = intent.hasExtra(DOOService.SERVICE_MESSAGE) ? intent.getStringExtra(DOOService.SERVICE_MESSAGE) : "";
                 BuildingPOJO buildingPOJO = (BuildingPOJO) intent.getParcelableExtra(DOOService.SERVICE_PAYLOAD);
-                finishActivity(buildingPOJO, message);
+
+                if (hasPicture){
+                    uploadImage();
+                } else {
+                    finishActivity(buildingPOJO, message);
+                }
 
             } else if (intent.hasExtra(DOOService.SERVICE_EXCEPTION)) {
                 String message = intent.getStringExtra(DOOService.SERVICE_EXCEPTION);
@@ -123,6 +130,7 @@ public class EditBuildingActivity extends AppCompatActivity implements View.OnCl
 
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBR, new IntentFilter(DOOService.SERVICE_EDIT));
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBR, new IntentFilter(DOOService.SERVICE_DELETE));
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBR, new IntentFilter(DOOService.SERVICE_IMAGE));
     }
 
     @Override
@@ -237,6 +245,22 @@ public class EditBuildingActivity extends AppCompatActivity implements View.OnCl
         intent.putExtra(DOOService.REQUEST_ENDPOINT, BASE_URL + "/" + buildingPOJO.getBuildingId());
         intent.putExtra(REQUEST_SERVICE,DOOService.SERVICE_DELETE);
         intent.putExtra(DOOService.REQUEST_METHOD, "DELETE");
+        startService(intent);
+    }
+
+    private void uploadImage(){
+        hasPicture = false;
+
+        Intent intent = new Intent(this, DOOService.class);
+        intent.putExtra(DOOService.REQUEST_ENDPOINT, BASE_URL + "/" + buildingPOJO.getBuildingId() + IMAGE_PATH);
+        intent.putExtra(REQUEST_SERVICE,DOOService.SERVICE_IMAGE);
+        intent.putExtra(DOOService.REQUEST_METHOD, "POST");
+
+        Bitmap bitmap  = ((BitmapDrawable) photoView.getDrawable( ) ).getBitmap( );
+        ByteArrayOutputStream baos = new ByteArrayOutputStream( );
+        bitmap.compress( Bitmap.CompressFormat.JPEG, 0, baos);
+        intent.putExtra(DOOService.IMAGE_BYTEARRAY, baos.toByteArray());
+
         startService(intent);
     }
 
@@ -370,7 +394,7 @@ public class EditBuildingActivity extends AppCompatActivity implements View.OnCl
                 if(bitmap != null){
                     //there is a picture
                     photoView.setImageBitmap(bitmap);
-                    //hasPicture = true;
+                    hasPicture = true;
                 }
                 break;
         }

@@ -23,6 +23,7 @@ public final class Values {
     public static final String SECURE_URL = "https://doors-open-ottawa.mybluemix.net/buildings/secure";
     public static final String BASE_URL = "https://doors-open-ottawa.mybluemix.net/buildings";
     public static final String IMAGE_PATH = "/image";
+    public static final String ADD_PATH = "/form";
 
     public static final int NO_SELECTED_CATEGORY_ID = -1;
     public static final int BUILDING_CATEGORY_FAVORITES = -2;

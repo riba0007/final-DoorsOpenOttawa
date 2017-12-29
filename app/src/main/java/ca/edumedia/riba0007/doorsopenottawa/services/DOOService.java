@@ -37,6 +37,7 @@ public class DOOService extends IntentService {
     public static final String SERVICE_EDIT = "building_edit";
     public static final String SERVICE_DETAILS = "building_details";
     public static final String SERVICE_DELETE = "building_delete";
+    public static final String SERVICE_IMAGE = "building_image";
 
     public static final String REQUEST_ENDPOINT = "endPoint";
     public static final String REQUEST_METHOD = "method";
@@ -85,7 +86,15 @@ public class DOOService extends IntentService {
                         .setType(MultipartBody.FORM)
                         .addFormDataPart("nameEN", intent.getStringExtra(BUILDING_NAME))
                         .addFormDataPart("addressEN", intent.getStringExtra(BUILDING_ADDRESS))
-                        .addFormDataPart("image", "riba0007building.jpg",
+                        .addFormDataPart("image", String.valueOf(System.currentTimeMillis())+".jpg",
+                                RequestBody.create(MEDIA_TYPE_JPEG, intent.getByteArrayExtra(IMAGE_BYTEARRAY) ) )
+                        .build();
+                    break;
+
+                case SERVICE_IMAGE:
+                    requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("image", String.valueOf(System.currentTimeMillis())+".jpg",
                                 RequestBody.create(MEDIA_TYPE_JPEG, intent.getByteArrayExtra(IMAGE_BYTEARRAY) ) )
                         .build();
                     break;
@@ -168,6 +177,7 @@ public class DOOService extends IntentService {
                             returnBuildingArray(output, service);
                             break;
                         case SERVICE_DELETE:
+                        case SERVICE_IMAGE:
                         case SERVICE_EDIT:
                         case SERVICE_ADD:
                             returnBuildingObject(output, service);

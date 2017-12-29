@@ -26,6 +26,7 @@ import ca.edumedia.riba0007.doorsopenottawa.services.DOOService;
 import ca.edumedia.riba0007.doorsopenottawa.utils.NetworkHelper;
 
 import static ca.edumedia.riba0007.doorsopenottawa.services.DOOService.REQUEST_SERVICE;
+import static ca.edumedia.riba0007.doorsopenottawa.utils.Values.ADD_PATH;
 import static ca.edumedia.riba0007.doorsopenottawa.utils.Values.BASE_URL;
 import static ca.edumedia.riba0007.doorsopenottawa.utils.Values.CAMERA_REQUEST_CODE;
 import static ca.edumedia.riba0007.doorsopenottawa.utils.Values.RESULT_OBJECT;
@@ -136,7 +137,7 @@ public class NewBuildingActivity extends AppCompatActivity implements View.OnCli
             if (!error) {
                 //call on the Service to make the call
                 Intent intent = new Intent(this, DOOService.class);
-                intent.putExtra(DOOService.REQUEST_ENDPOINT, BASE_URL);
+                intent.putExtra(DOOService.REQUEST_ENDPOINT, BASE_URL+ADD_PATH);
                 intent.putExtra(REQUEST_SERVICE,DOOService.SERVICE_ADD);
                 intent.putExtra(DOOService.REQUEST_METHOD, "POST");
                 intent.putExtra(DOOService.BUILDING_NAME, buildingName.getText().toString());
