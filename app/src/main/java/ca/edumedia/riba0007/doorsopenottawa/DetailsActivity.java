@@ -1,6 +1,8 @@
 package ca.edumedia.riba0007.doorsopenottawa;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
@@ -14,6 +16,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
+
+import java.util.Locale;
 
 import ca.edumedia.riba0007.doorsopenottawa.models.BuildingPOJO;
 
@@ -32,6 +36,7 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
     private TextView mDescription;
     private ImageView mImage;
     private TextView mOpenHours;
+    private Geocoder mGeocoder;
 
     private GoogleMap mMap;
 
@@ -50,6 +55,8 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         mImage = (ImageView) findViewById(R.id.building_details_image);
         mDescription = (TextView) findViewById(R.id.building_details_description);
         mOpenHours = (TextView) findViewById(R.id.building_details_open);
+
+        mGeocoder = new Geocoder( this, Locale.CANADA );
 
         Intent intent = getIntent();
         if (intent.hasExtra(PROP_BUILDING_DETAILS)) {
@@ -81,13 +88,25 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
 
     /** Locate and pin locationName to the map. */
     private void pin( ) {
+
+        //try by address
         try {
-            LatLng ll = new LatLng( buildingPOJO.getLatitude(), buildingPOJO.getLongitude() );
+            Address address = mGeocoder.getFromLocationName(buildingPOJO.getAddressEN(), 1).get(0);
+            LatLng ll = new LatLng( address.getLatitude(), address.getLongitude() );
             mMap.addMarker( new MarkerOptions().position(ll).title(buildingPOJO.getAddressEN()) );
             mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(ll, 13.F) );
-            Toast.makeText(this, "Pinned: " + buildingPOJO.getAddressEN(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Pinned: " + buildingPOJO.getAddressEN(), Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(this, "Not found: " + buildingPOJO.getAddressEN(), Toast.LENGTH_SHORT).show();
+
+            //try by lat / long
+            try {
+                LatLng ll = new LatLng( buildingPOJO.getLatitude(), buildingPOJO.getLongitude() );
+                mMap.addMarker( new MarkerOptions().position(ll).title(buildingPOJO.getAddressEN()) );
+                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(ll, 13.F) );
+                //Toast.makeText(this, "Pinned: " + buildingPOJO.getAddressEN(), Toast.LENGTH_SHORT).show();
+            } catch (Exception er){
+                Toast.makeText(this, "Not found: " + buildingPOJO.getAddressEN(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
