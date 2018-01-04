@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -105,9 +106,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         final BuildingPOJO buildingPOJO = mBuildingPOJOs.get(position);
 
-        String url = BASE_URL + buildingPOJO.getBuildingId() + IMAGE_PATH;
+        String url = BASE_URL + buildingPOJO.getBuildingId() + IMAGE_PATH; //+ "?"+String.valueOf(System.currentTimeMillis());
         Picasso.with(mContext)
                 .load(url)
+                .placeholder(R.drawable.noimage)
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .error(R.drawable.noimage)
                 .into(holder.imageView);
 
