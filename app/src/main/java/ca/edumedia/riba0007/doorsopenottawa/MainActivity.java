@@ -88,9 +88,11 @@ public class MainActivity extends AppCompatActivity {
 
                 if (message.isEmpty()){
                     BuildingPOJO[] buildingsArray = (BuildingPOJO[]) intent.getParcelableArrayExtra(DOOService.SERVICE_PAYLOAD);
-                    Toast.makeText(MainActivity.this,
+
+                    /*Toast.makeText(MainActivity.this,
                             "Received " + buildingsArray.length + " buildings from service",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT).show();*/
+
                     //Save the Buildings as a global member field in a List or ArrayList
                     mBuildingsList = new ArrayList<>(Arrays.asList(buildingsArray));
                     displayBuildings();
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     BuildingPOJO buildingPOJO = (BuildingPOJO) intent.getParcelableExtra(DOOService.SERVICE_PAYLOAD);
 
                     if (message.equals(DOOService.SERVICE_DELETE)) {
-                        Toast.makeText(getApplicationContext(),"Building " + buildingPOJO.getBuildingId() + " deleted.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.message_deleted, buildingPOJO.getBuildingId()),Toast.LENGTH_SHORT).show();
                         mMyBuildings.remove(buildingPOJO.getBuildingId());
                         fetchBuildings();
                     }
@@ -298,17 +300,17 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (requestCode) {
                     case ACTIVITY_NEW_BUILDING:
-                        Toast.makeText(this,"New building Added",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this,getResources().getString(R.string.message_added),Toast.LENGTH_SHORT).show();
                         mMyBuildings.add(buildingPOJO.getBuildingId());
                         break;
                     case ACTIVITY_EDIT_BUILDING:
                         if (resultIntent.hasExtra(RESULT_MESSAGE)) {
                             String resultMessage = resultIntent.getStringExtra(RESULT_MESSAGE);
                             if (resultMessage.equals(DOOService.SERVICE_DELETE)) {
-                                Toast.makeText(this,"Building " + buildingPOJO.getBuildingId() + " deleted.",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this,getResources().getString(R.string.message_deleted, buildingPOJO.getBuildingId()),Toast.LENGTH_SHORT).show();
                                 mMyBuildings.remove(buildingPOJO.getBuildingId());
                             } else {
-                                Toast.makeText(this,"Building " + buildingPOJO.getBuildingId() + " saved.",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this,getResources().getString(R.string.message_saved, buildingPOJO.getBuildingId()),Toast.LENGTH_SHORT).show();
                             }
                         }
                         break;
@@ -390,6 +392,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case BUILDING_CATEGORY_FAVORITES:
                 id = R.id.action_filter_favorites;
+                break;
             default:
                 id = R.id.action_filter_none;
         }
@@ -464,8 +467,7 @@ public class MainActivity extends AppCompatActivity {
 
             startService(intent);
         } else {
-            Toast.makeText(this, "Network not available", Toast.LENGTH_SHORT).show();
-            //Such sad. No Network
+            Toast.makeText(this, getResources().getString(R.string.error_no_network) , Toast.LENGTH_SHORT).show();
         }
     }
 }

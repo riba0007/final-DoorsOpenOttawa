@@ -152,7 +152,7 @@ public class NewBuildingActivity extends AppCompatActivity implements View.OnCli
                 startService(intent);
             }
         } else {
-            Toast.makeText(this, "Network not available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_no_network, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -200,7 +200,7 @@ public class NewBuildingActivity extends AppCompatActivity implements View.OnCli
         Bundle extras;
         Bitmap bitmap;
         if(resultCode == RESULT_CANCELED){
-            Toast.makeText(getApplicationContext(), "No picture taken", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "No picture taken", Toast.LENGTH_SHORT).show();
             return;
         }
         switch(requestCode){

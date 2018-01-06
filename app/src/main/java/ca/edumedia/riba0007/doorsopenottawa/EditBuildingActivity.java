@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -113,7 +114,7 @@ public class EditBuildingActivity extends AppCompatActivity implements View.OnCl
 
         } else {
             buildingPOJO = new BuildingPOJO();
-            buildingName.setText("No Data");
+            buildingName.setText(getResources().getString(R.string.error_no_data));
             buildingName.setEnabled(false);
             buildingAddress.setEnabled(false);
             buildingDescription.setEnabled(false);
@@ -195,6 +196,8 @@ public class EditBuildingActivity extends AppCompatActivity implements View.OnCl
         String url = BASE_URL + "/" + buildingPOJO.getBuildingId() + IMAGE_PATH;
         Picasso.with(this)
                 .load(url)
+                .placeholder(R.drawable.noimage)
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .error(R.drawable.noimage)
                 .into(photoView);
     }
@@ -267,7 +270,7 @@ public class EditBuildingActivity extends AppCompatActivity implements View.OnCl
     private void saveBuilding(){
 
         if (buildingPOJO.getBuildingId() == null || buildingPOJO.getBuildingId() <= 0){
-            Toast.makeText(this,"No Data to update", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.error_no_data), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -315,7 +318,7 @@ public class EditBuildingActivity extends AppCompatActivity implements View.OnCl
                 startService(intent);
             }
         } else {
-            Toast.makeText(this, "Network not available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.error_no_network), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -342,6 +345,7 @@ public class EditBuildingActivity extends AppCompatActivity implements View.OnCl
     private String getFormattedDate(String date, String time){
         String formattedDate = "";
 
+        //DOO is open SAT and SUN only. Not allowed to choose date
         if (date.equals("SAT")){
             formattedDate = "2017-06-03 ";
         }else {
@@ -384,7 +388,7 @@ public class EditBuildingActivity extends AppCompatActivity implements View.OnCl
         Bundle extras;
         Bitmap bitmap;
         if(resultCode == RESULT_CANCELED){
-            Toast.makeText(getApplicationContext(), "No picture taken", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "No picture taken", Toast.LENGTH_SHORT).show();
             return;
         }
         switch(requestCode){

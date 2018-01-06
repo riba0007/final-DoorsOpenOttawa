@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,6 +14,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
@@ -65,18 +65,22 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
             String url = BASE_URL + "/" + buildingPOJO.getBuildingId() + IMAGE_PATH;
             Picasso.with(this)
                     .load(url)
+                    .placeholder(R.drawable.noimage)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .error(R.drawable.noimage)
                     .into(mImage);
 
             mName.setText(buildingPOJO.getNameEN());
             mDescription.setText(buildingPOJO.getDescriptionEN());
 
-            String sOpenHours = "Sat " + formatOpenHours(buildingPOJO.getSaturdayStart(),buildingPOJO.getSaturdayClose()) +
-                    "\nSun " + formatOpenHours(buildingPOJO.getSundayStart(),buildingPOJO.getSundayClose());
+            String sOpenHours = getResources().getString(R.string.text_open_hours,
+                    formatOpenHours(buildingPOJO.getSaturdayStart(),buildingPOJO.getSaturdayClose()),
+                    formatOpenHours(buildingPOJO.getSundayStart(),buildingPOJO.getSundayClose()));
+
             mOpenHours.setText(sOpenHours);
 
         } else {
-            mName.setText("No Data");
+            mName.setText(getResources().getString(R.string.error_no_data));
         }
     }
 
@@ -105,18 +109,19 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
                 mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(ll, 13.F) );
                 //Toast.makeText(this, "Pinned: " + buildingPOJO.getAddressEN(), Toast.LENGTH_SHORT).show();
             } catch (Exception er){
-                Toast.makeText(this, "Not found: " + buildingPOJO.getAddressEN(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Not found: " + buildingPOJO.getAddressEN(), Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     private String formatOpenHours(String sOpen, String sClose){
 
-        String formattedString = "Closed";
+        String formattedString = getResources().getString(R.string.text_closed);
 
         if (sOpen != null && sClose != null){
 
-            formattedString = sOpen.substring(8,10) + " from " + sOpen.substring(11, 16) + " to " + sClose.substring(11, 16);
+            formattedString = getResources().getString(R.string.text_open_hour_time,
+                    sOpen.substring(8,10) , sOpen.substring(11, 16) , sClose.substring(11, 16));
         }
 
         return formattedString;

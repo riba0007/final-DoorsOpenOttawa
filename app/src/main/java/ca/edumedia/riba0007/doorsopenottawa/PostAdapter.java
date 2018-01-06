@@ -57,7 +57,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Collections.sort( mBuildingPOJOs, new Comparator<BuildingPOJO>() {
             @Override
             public int compare( BuildingPOJO lhs, BuildingPOJO rhs ) {
-                return lhs.getNameEN().compareToIgnoreCase( rhs.getNameEN() );
+                return unaccentLetter(lhs.getNameEN()).compareToIgnoreCase( unaccentLetter(rhs.getNameEN()) );
             }
         });
 
@@ -68,14 +68,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Collections.sort( mBuildingPOJOs, Collections.reverseOrder(new Comparator<BuildingPOJO>() {
             @Override
             public int compare( BuildingPOJO lhs, BuildingPOJO rhs ) {
-                return lhs.getNameEN().compareToIgnoreCase( rhs.getNameEN() );
+                return unaccentLetter(lhs.getNameEN()).compareToIgnoreCase( unaccentLetter(rhs.getNameEN()) );
             }
         }));
 
         notifyDataSetChanged();
     }
 
-    //not in use
+
+    private static String unaccentLetter(String s) {
+        s = s.replaceAll("[ÈÉÊËèéêë]","E");
+        s = s.replaceAll("[ÛÙûù]","U");
+        s = s.replaceAll("[ÏÎïî]","I");
+        s = s.replaceAll("[ÀÂàâ]","A");
+        s = s.replaceAll("Ôô","O");
+        return s;
+    }
+
+
     //filter by favorites or mybuildings
     public void filterByListId(List<Integer> listIds){
         ArrayList<BuildingPOJO> newBuildingPOJOs = new ArrayList<BuildingPOJO>();

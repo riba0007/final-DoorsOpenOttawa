@@ -46,7 +46,17 @@
 
     <string name="error_building_name">Please fill Building Name</string>
     <string name="error_building_address">Please fill Building Address</string>
+    <string name="error_no_network">Network not available</string>
+    <string name="error_no_data">No Data</string>
 
     <string name="author" translatable="false">Priscila Ribas da Costa (riba0007)</string>
+
     <string name="message_confirm_discard">Would you like to discard all changes and return?</string>
+    <string name="message_deleted">Building %d deleted</string>
+    <string name="message_saved">Building %d saved</string>
+    <string name="message_added">New building Added</string>
+
+    <string name="text_open_hours">Sat %1$s\nSun %2$s</string>
+    <string name="text_open_hour_time">%1$s from %2$s to %3$s</string>
+    <string name="text_closed">Closed</string>
 </resources>
